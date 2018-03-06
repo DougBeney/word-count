@@ -19,6 +19,7 @@ with open('urls.txt') as f:
 for url in lines:
 	urlObject = {}
 	if ",!" in url:
+		array = url.split(",")
 		globalcomp = re.sub("!", "", array[1])
 	if "," in url:
 		array = url.split(",")
@@ -73,4 +74,3 @@ if __name__ == "__main__":
 			word_count -= int(globalcomp)
 		print(url, ': ', word_count)
 		time.sleep(float(timeout/1000))
-
