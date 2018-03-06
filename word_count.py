@@ -1,6 +1,7 @@
 import re
 import time
 import string
+from bs4 import BeautifulSoup
 from operator import itemgetter
 from urllib.request import Request, urlopen
 
@@ -9,6 +10,12 @@ import tomd
 ### SETTINGS ###
 ################
 timeout = 500  # Timeout between Checking URLS (Milliseconds)
+element = 'body' # You can search for a specific element to count words in
+element_attrs = {} # Example attribute below.
+# element_attrs = {
+	# "class": 'my-class',
+	# "id": 'my-id',
+# }
 ################
 
 globalcomp = False
@@ -48,7 +55,10 @@ def getHTML(url):
 
 if __name__ == "__main__":
 	for url in urls:
-		html = tomd.convert(getHTML(url['url']))
+		html = getHTML(url['url'])
+		soup = BeautifulSoup(html, 'html.parser')
+		html = str(soup.find(element, attrs=element_attrs))
+		html = tomd.convert(html)
 		wordlist = re.sub("[^\w]", " ", html).split()
 		word_count = len(wordlist)
 		if not globalcomp:

@@ -52,3 +52,7 @@ https://article3.com
 By default, this script sleeps for 100 milliseconds in between checking URLs.
 
 You could set a custom amount by editing the `timeout` variable in the script.
+
+## Get Word Count of HTML Element
+
+You can edit the element targeting by editing the script's `element` and `element_attrs` variables
