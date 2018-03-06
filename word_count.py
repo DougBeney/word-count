@@ -4,6 +4,8 @@ import string
 from operator import itemgetter
 from urllib.request import Request, urlopen
 
+import tomd
+
 ### SETTINGS ###
 ################
 timeout = 500  # Timeout between Checking URLS (Milliseconds)
@@ -44,33 +46,15 @@ def getHTML(url):
 	fp.close()
 	return html
 
-def getWordCount(data):
-	freqct = {}
-	for s in data.split(' '):
-		if s not in freqct:
-			freqct[s]=1
-		else:
-			 freqct[s]+=1
-	sol = sorted(freqct.items(), key=itemgetter(1))
-	word_count = 0
-	for word,count in sol:
-		invalidChars = set(string.punctuation.replace("_", ""))
-		invalid_count = 0
-		if any(char in invalidChars for char in word):
-			invalid_count += 1
-		if invalid_count == 0:
-			word_count += count
-	return word_count
-
 if __name__ == "__main__":
 	for url in urls:
-		html = getHTML(url['url'])
-		data = re.sub(r'<[^>]+>','', html)
-		word_count = getWordCount(data)
+		html = tomd.convert(getHTML(url['url']))
+		wordlist = re.sub("[^\w]", " ", html).split()
+		word_count = len(wordlist)
 		if not globalcomp:
 			if(url.get('comp', False)):
 				word_count -= int(url['comp'])
 		else:
 			word_count -= int(globalcomp)
-		print(url, ': ', word_count)
+		print(url['url'], ': ', word_count)
 		time.sleep(float(timeout/1000))
