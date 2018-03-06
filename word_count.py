@@ -71,7 +71,6 @@ if __name__ == "__main__":
 				word_count -= int(url['comp'])
 		else:
 			word_count -= int(globalcomp)
-		print(int(url['comp']))
 		print(url, ': ', word_count)
 		time.sleep(float(timeout/1000))
 
